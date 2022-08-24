@@ -23,4 +23,8 @@ public class UserService {
         return user.orElseThrow();
     }
 
+    public User insert(User user){
+        return userRepository.save(user);
+    }
+
 }
