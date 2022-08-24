@@ -2,6 +2,7 @@ package com.oxd.course.service;
 
 import com.oxd.course.entities.User;
 import com.oxd.course.repositories.UserRepository;
+import com.oxd.course.service.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UserService {
 
     public User findById(Long id){
         Optional<User> user = userRepository.findById(id);
-        return user.orElseThrow();
+        return user.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User user){
