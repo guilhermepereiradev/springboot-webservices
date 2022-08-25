@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -42,9 +43,13 @@ public class UserService {
     }
 
     public User update(Long id, User user){
-        Optional<User> entity = userRepository.findById(id);
-        updateData(entity.get(), user);
-        return userRepository.save(entity.get());
+        try {
+            Optional<User> entity = userRepository.findById(id);
+            updateData(entity.get(), user);
+            return userRepository.save(entity.get());
+        } catch (NoSuchElementException e){
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(User entity, User obj){
